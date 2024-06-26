@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { store } from './redux/store';
+import BlogEditor from './components/BlogEditor';
+import BlogList from './components/BlogList';
+import ThemeSwitcher from './components/ThemeSwitcher';
+import { ThemeProvider, CssBaseline, Container, Typography, Box } from '@mui/material';
+import { lightTheme, darkTheme } from './theme';
 
-function App() {
+const AppContent = () => {
+  const darkMode = useSelector(state => state.theme.darkMode);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <Container maxWidth="md">
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Typography variant="h4" component="h1" align="center">
+            Vecros Blog App
+          </Typography>
+        </Box>
+        <ThemeSwitcher />
+        <BlogEditor />
+        <BlogList />
+      </Container>
+    </ThemeProvider>
   );
-}
+};
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
+  );
+};
 
 export default App;
